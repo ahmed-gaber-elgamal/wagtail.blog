@@ -1,0 +1,46 @@
+{% extends "account/base_card.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block title %}{% trans "Sign In" %}{% endblock %}
+{% block card-header %}
+<h3>{% trans "Sign In" %}</h3>
+{% endblock %}
+{% block card-body %}
+            <form class="login" method="POST" action="{% url 'account_login' %}">
+              {% csrf_token %}
+               <div class="form-group">
+                   {% with field=form.login %}{% include "account/form_field.html" %}{% endwith %}
+               </div>
+                <div class="form-group">
+                   {% with field=form.password %}{% include "account/form_field.html" %}{% endwith %}
+               </div>
+              <button class="btn btn-danger" type="submit">{% trans "Sign In" %}</button>
+                
+            </form>
+{% endblock %}
+{% block card-footer %}
+                {% get_providers as socialaccount_providers %}
+
+                {% if socialaccount_providers %}
+                <p>{% blocktrans with site.name as site_name %}
+                    don't have an account
+                <a href="{{ signup_url }}">sign up</a>
+                {% endblocktrans %}</p>
+
+                <div class="socialaccount_ballot">
+
+                  <ul class="socialaccount_providers">
+
+                    login with{%  include "socialaccount/snippets/provider_list.html" with process="login" %}
+                  </ul>
+
+
+                </div>
+
+                {% include "socialaccount/snippets/login_extra.html" %}
+            {% endif %}
+            <a class="btn btn-link" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+
+{% endblock %}
