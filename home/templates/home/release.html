@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+{% load social_share %}
+
+{% block content %}
+<h2>Movies Released in: {{ year }}</h2>
+{% for post in posts %}
+    <div class="card mb-3">
+        <h3 ><a href="{% pageurl post %}">{{ post.title }}</a></h3>
+  <div class="card-body">
+    <h5 class="card-title">{{ post.intro }}</h5>
+    <h6 class="card-subtitle text-muted">{{post.date}}</h6>
+  </div>
+<!--        <div style="float:left; margin:10px;">-->
+        <div class="text-center">
+                {% image post.gallery_images.first.image width-500  %}
+                <p>{{ post.gallery_images.first.caption }}</p>
+        </div>
+  <div class="card-body">
+    <p class="card-text">{{ post.body|richtext }}</p>
+  </div>
+<h3>share this post to:</h3>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">{% post_to_twitter "New Post: {{post.title}}. Check it out!" post "Post to Twitter" %}</li>
+<!--    <li class="list-group-item"> {% send_email post.title "New Post: {{post.title}}. Check it out!" post "Share via email" %}</li>-->
+    <li class="list-group-item">{% post_to_reddit "New Post: {{post.title}}" post %}</li>
+    <li class="list-group-item">{% post_to_telegram "New Post: {{post.title}}" post %}</li>
+  </ul>
+  <div class="card-body">
+      {% if post.tags.all.count %}
+            {% for tag in post.tags.all %}
+                <a href="{% slugurl 'tags' %}?tag={{ tag }}" class="card-link">#{{ tag }}</a>
+            {% endfor %}
+     {% endif %}
+  </div>
+  <div class="card-footer text-muted">
+{% for author in post.post_author.all %}
+      posted by: {{ author.author.name }}
+{% endfor %}
+</div>
+    </div>
+{% endfor %}
+
+
+
+{% endblock %}

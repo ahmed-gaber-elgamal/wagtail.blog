@@ -7,11 +7,11 @@ from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from .views import profile_view
 from search import views as search_views
-
+from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
 urlpatterns = [
     url(r'^tellme/', include("tellme.urls")),
     url(r'^django-admin/', admin.site.urls),
-
+    url(r'^admin/autocomplete/', include(autocomplete_admin_urls)),
     url(r'^admin/', include(wagtailadmin_urls)),
     url(r'^documents/', include(wagtaildocs_urls)),
 

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+{% load social_share %}
+{% block content %}
+<h1>All Released years</h1>
+    <div class="list-group">
+        {% for post in posts %}
+          <a href="{{self.url}}year/{{ post.release }}" class="list-group-item list-group-item-action flex-column align-items-start active">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{ post.release }}</h5>
+            </div>
+                {% image cat.icon fill-50x50 style="vertical-align:middle" %}
+          </a>
+        {% endfor %}
+    </div>
+{% endblock %}

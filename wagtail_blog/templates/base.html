@@ -1,4 +1,6 @@
-{% load static wagtailuserbar %}
+{% load static wagtailuserbar  %}
+{% load wagtailcore_tags wagtailimages_tags  %}
+{% load static %}
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -18,10 +20,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {# Global stylesheets #}
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://bootswatch.com/4/cyborg/bootstrap.min.css" crossorigin="anonymous">
+        <link rel="icon" type="image/png" href="{% static 'images/ghost.png' %}">
         <link href="{% static 'tellme/feedback.min.css' %}" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/wagtail_blog.css' %}">
-
+        <link rel="stylesheet" type="text/css" href="{% static 'css/mywagtail.css' %}">
+        <link href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all" rel="stylesheet">
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
         {% endblock %}
@@ -29,12 +32,204 @@
 
     <body class="{% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+          <a class="navbar-brand" href="{% slugurl 'home' %}">
+            <img src="{% static 'images/ghost2.svg' %}" height="35" width="35">
+          </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% slugurl '10-best-horror-movies' %}categories">Categories</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% slugurl '10-best-horror-movies' %}years">Movies by year</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% slugurl '10-best-horror-movies' %}">Our Lists</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% slugurl 'about' %}">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% slugurl 'contact-us' %}">Contact Us</a>
+              </li>
+
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    {% if request.user.is_authenticated %}
+                        Hi {{ request.user.username }}
+                        <a href="{% url 'account_logout' %}" class="nav-link d-inline">Logout?</a>
+                    {% else %}
+                        Hi Guest!
+                        <a href="{% url 'account_login' %}" class="nav-link d-inline">Login?</a>
+                    {% endif %}
+                </li>
+            </ul>
+<!--            <fo`rm class="form-inline my-2 my-lg-0">-->
+<!--              <input class="form-control mr-sm-2" type="text" placeholder="Search">-->
+<!--              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>-->
+<!--            </form>-->
+          </div>
+    </nav>
 
         {% block content %}{% endblock %}
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
 
+<hr class="my-4" style="color:gray;background-color:gray">
+
+<!-- Footer -->
+<footer class="page-footer font-small stylish-color-dark pt-4">
+
+  <!-- Footer Links -->
+  <div class="container text-center text-md-left">
+
+    <!-- Grid row -->
+    <div class="row">
+
+      <!-- Grid column -->
+      <div class="col-md-4 mx-auto">
+
+        <!-- Content -->
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Horror Blog</h5>
+        <p>lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem </p>
+
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none">
+
+      <!-- Grid column -->
+      <div class="col-md-2 mx-auto">
+
+        <!-- Links -->
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4"> Important Links</h5>
+
+        <ul class="list-unstyled">
+          <li>
+            <a href="https://www.imdb.com/?ref_=nv_home" target="_blank">IMDB</a>
+          </li>
+          <li>
+            <a href="https://www.rottentomatoes.com/" target="_blank">Rotten Tomatoes</a>
+          </li>
+          <li>
+            <a href="https://www.indiewire.com/" target="_blank">indiewire</a>
+          </li>
+          <li>
+            <a href="https://variety.com/" target="_blank">Variety</a>
+          </li>
+        </ul>
+
+      </div>
+      <!-- Grid column -->
+
+
+      <hr class="clearfix w-100 d-md-none">
+
+      <!-- Grid column -->
+      <div class="col-md-2 mx-auto">
+
+        <!-- Links -->
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Youtube Channels</h5>
+
+        <ul class="list-unstyled">
+            <li>
+            <a href="https://www.youtube.com/results?search_query=nerd+writer" target="_blank">NerdWriter</a>
+          </li>
+          <li>
+            <a href="https://www.youtube.com/c/FilmGamed" target="_blank">FilmGamed</a>
+          </li>
+          <li>
+            <a href="https://www.youtube.com/channel/UCAMQZZXKxFhdr5gvbcy1IuQ" target="_blank">ShreetVideo</a>
+          </li>
+          <li>
+            <a href="https://www.youtube.com/c/CINEMATOLOGYOfficial" target="_blank">CINEMATOLOGY</a>
+          </li>
+
+        </ul>
+
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+  <!-- Footer Links -->
+
+  <hr>
+
+  <!-- Call to action -->
+  <ul class="list-unstyled list-inline text-center py-2">
+    <li class="list-inline-item">
+      <h5 class="mb-1">Register for free</h5>
+    </li>
+    <li class="list-inline-item">
+{{ site }}
+      <a href="{% url 'account_signup' %}" class="btn btn-danger btn-rounded">Sign up!</a>
+
+    </li>
+  </ul>
+  <!-- Call to action -->
+
+  <hr>
+
+  <!-- Social buttons -->
+  <ul class="list-unstyled list-inline text-center">
+    <li class="list-inline-item">
+      <a class="btn-floating btn-fb mx-1" href="https://www.facebook.com/ahmed.gaber.2013">
+        <i class="fab fa-facebook-f fa-3x"> </i>
+      </a>
+    </li>
+    <li class="list-inline-item">
+      <a class="btn-floating btn-tw mx-1" href="https://twitter.com/elite_iti">
+        <i class="fab fa-twitter fa-3x"> </i>
+      </a>
+    </li>
+<!--    <li class="list-inline-item">-->
+<!--      <a class="btn-floating btn-gplus mx-1" href="">-->
+<!--        <i class="fab fa-google fa-3x"> </i>-->
+<!--      </a>-->
+<!--    </li>-->
+    <li class="list-inline-item">
+      <a class="btn-floating btn-li mx-1" href="https://www.linkedin.com/in/ahmed-gaber-elgamal-eg/">
+        <i class="fab fa-linkedin-in fa-3x"> </i>
+      </a>
+    </li>
+    <li class="list-inline-item">
+      <a class="btn-floating btn-github mx-1" href="https://github.com/ahmed-gaber-elgamal">
+        <i class="fab fa-github fa-3x"> </i>
+      </a>
+    </li>
+  </ul>
+  <!-- Social buttons -->
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2020 Copyright
+      made with <i class="fas fa-heart" style="color:red;"></i> by
+    <a href="https://www.linkedin.com/in/ahmed-gaber-elgamal-eg/"> Ahmed Gaber</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
         {# Global javascript #}
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+          <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCU521d5X5e9mcANu4V_FB-f39IN_j1bOs&callback=initMap"
+  type="text/javascript"></script>
         {%  include 'tellme/js_inc.html' %}
         <script type="text/javascript" src="{% static 'js/wagtail_blog.js' %}"></script>
 
