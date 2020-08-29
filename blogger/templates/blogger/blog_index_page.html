@@ -5,21 +5,60 @@
 {% block body_class %}template-blogindexpage{% endblock %}
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
+<div class="container">
+    <div class="text-center">
+        <h1>{{ page.title }}</h1>
+<!--    <div class="intro">{{ page.intro|richtext }}</div>-->
+    {% for post in posts %}
+                <div class="text-center">
+            <h2 ><a href="{% pageurl post %}">{{ post.title }}</a></h2>
+            {% image post.specific.gallery_images.first.image width-500  %}
+            <p>{{ post.specific.gallery_images.first.caption }}</p>
+            <em>{{ post.specific.intro }}</em>
+        {{ post.specific.body|richtext }}
 
-    <div class="intro">{{ page.intro|richtext }}</div>
+        </div>
 
-{% for post in blogpages %}
-    {% with post=post.specific %}
-        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
+    {% endfor %}
 
-        {% with post.main_image as main_image %}
-            {% if main_image %}{% image main_image fill-160x100 %}{% endif %}
-        {% endwith %}
 
-        <p>{{ post.intro }}</p>
-        {{ post.body|richtext }}
-    {% endwith %}
-{% endfor %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                {% if posts.paginator.num_pages > 1 %}
+                    <div class="pagination">
+                        {% if posts.has_previous %}
+                        <li class="page-item">
+                            <a href="?page={{ posts.previous_page_number }}" class="page-link">
+                                <span>&laquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
 
+                        {% for page_num in posts.paginator.page_range %}
+                        <li class="page-item {% if page_num == posts.number %}active{% endif %}">
+                            <a href="?page={{ page_num }}" class="page-link">
+                                {{page_num}}
+                            </a>
+                        </li>
+                        {% endfor %}
+                        {% if posts.has_next %}
+                        <li class="page-item">
+                            <a href="?page={{ posts.next_page_number }}" class="page-link">
+                                <span>&raquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+</div>
+        </div>
 {% endblock %}
+
+
+

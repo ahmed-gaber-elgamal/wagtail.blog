@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'contact',
     'tellme',
     'wagtailautocomplete',
+    'django_social_share',
 ]
 
 SITE_ID = 1
@@ -156,7 +157,7 @@ STATICFILES_FINDERS = [
 
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static'),
-    os.path.join(BASE_DIR, 'mywagtail/static/mywagtail/'),
+    os.path.join(BASE_DIR, 'wagtail_blog/static/wagtail_blog/'),
 ]
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
