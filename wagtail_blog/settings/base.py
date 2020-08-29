@@ -27,8 +27,11 @@ INSTALLED_APPS = [
     'home',
     'search',
 
+    'wagtail_contact_reply',  # Must be before wagtail.contrib.forms
     'wagtail.contrib.forms',
+    'wagtail.contrib.modeladmin',
     'wagtail.contrib.redirects',
+    'wagtail.contrib.routable_page',
     'wagtail.embeds',
     'wagtail.sites',
     'wagtail.users',
@@ -57,6 +60,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
 
     'blogger',
+    'contact',
+    'tellme',
 
 ]
 

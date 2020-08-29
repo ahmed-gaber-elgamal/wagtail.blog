@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+    <p class="meta">posted at {{ page.date }} by {{ page.owner }}</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ self.youtube_video_id }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    {% with categories=page.categories.all %}
+        {% if categories %}
+            <h3>Posted in</h3>
+            <ul>
+                {% for category in categories %}
+                    <li style="display:inline">
+                        {% image category.icon fill-32x32 style="vertical-align:middle" %}
+                        <a href="{{ self.get_parent.url }}?category={{ cat.slug }}">{{ category.name }}</a>
+                    </li>
+                {%endfor%}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="intro">{{ page.intro }}</div>
+
+    {{ page.body|richtext }}
+
+    {% for item in page.gallery_images.all %}
+        <div style="float:left; margin:10px;">
+            {% image item.image fill-320x240 %}
+            <p>{{ item.caption }}</p>
+        </div>
+
+    {% endfor %}
+    {% if page.sequel %}
+    <p class="text-danger">Sequel: </p>
+    {% for block in page.sequel %}
+<!--        {{ block.count }} #todo-->
+        {% include_block block %}
+    {% endfor %}
+    {% endif %}
+    {% for author in self.post_author.all %}
+    {% image author.author.image fill-100x100 as img %}
+        <h1>
+            posted by:
+            <a href="{{ author.author.website }}" target="_blank">
+
+            </a>
+
+        </h1>
+         <a href="{{ author.author.website }}" target="_blank">
+            <img src="{{ img.url }}" title="{{ author.author.name }}" />
+         </a>
+
+    {% endfor %}
+
+    {% if page.tags.all.count %}
+        <div class="tags">
+            <h3>Tags</h3>
+            {% for tag in page.tags.all %}
+                <a href="{% slugurl 'tags' %}?tag={{ tag }}"><button type="button">{{ tag }}</button></a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div>
+        <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
+    </div>
+
+
+{% endblock %}

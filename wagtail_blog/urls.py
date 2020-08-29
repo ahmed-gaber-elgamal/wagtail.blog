@@ -9,6 +9,7 @@ from .views import profile_view
 from search import views as search_views
 
 urlpatterns = [
+    url(r'^tellme/', include("tellme.urls")),
     url(r'^django-admin/', admin.site.urls),
 
     url(r'^admin/', include(wagtailadmin_urls)),
