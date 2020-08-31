@@ -64,6 +64,8 @@ INSTALLED_APPS = [
     'tellme',
     'wagtailautocomplete',
     'django_social_share',
+    'star_ratings',
+
 ]
 
 SITE_ID = 1
@@ -216,3 +218,4 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+STAR_RATINGS_RANGE=10
