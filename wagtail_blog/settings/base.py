@@ -65,6 +65,8 @@ INSTALLED_APPS = [
     'wagtailautocomplete',
     'django_social_share',
     'star_ratings',
+    'django_comments_xtd',
+    'django_comments',
 
 ]
 
@@ -219,3 +221,20 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 STAR_RATINGS_RANGE=10
+COMMENTS_APP = 'django_comments_xtd'
+COMMENTS_XTD_SALT = (b"Timendi causa est nescire. "
+                     b"Aequam memento rebus in arduis servare mentem.")
+COMMENTS_XTD_FROM_EMAIL = "noreply@example.com"
+
+COMMENTS_XTD_CONTACT_EMAIL = "helpdesk@example.com"
+COMMENTS_XTD_MODEL = 'blogger.models.CustomComment'
+COMMENTS_XTD_MAX_THREAD_LEVEL = 1  # site wide default
+COMMENTS_XTD_LIST_ORDER = ('-thread_id', 'order')
+COMMENTS_XTD_APP_MODEL_OPTIONS = {
+    'default': {
+        'allow_flagging': True,
+        'allow_feedback': True,
+        'show_feedback': True,
+        'who_can_post': 'all'  # Valid values: 'all', users'
+    }
+}

@@ -1,0 +1,43 @@
+{% load comments i18n %}
+<form action="{% comment_form_target %}" method="post" novalidate class="needs-validation">{% csrf_token %}
+  <fieldset>
+    <input type="hidden" name="next" value="{% url 'comments-xtd-sent' %}">
+    <div class="alert alert-danger" data-comment-element="errors" hidden></div>
+    {% for field in form %}
+    {% if field.is_hidden %}<div>{{ field }}</div>{%endif%}{%endfor%}
+    <div style="display:none">{{form.honeypot}}</div>
+    <div class="form-group">
+      {%with field=form.comment%}{%include 'account/form_field.html'%}{%endwith%}
+    </div>
+    {%if not request.user.is_authenticated or not request.user.username  %}
+
+    <div class="form-group">
+      {%with field=form.name%}{%include 'account/form_field.html'%}{%endwith%}
+    </div>
+    {%endif%}
+    {%if not request.user.is_authenticated or not request.user.email %}
+    <div class="form-group">
+      {%with field=form.email%}{%include 'account/form_field.html'%}{%endwith%}
+    </div>
+    {%endif%}
+            <div class="row form-group">
+            <div class="offset-md-3 col-md-7">
+                <div class="custom-control custom-checkbox">
+                    {{ form.followup }}
+                    <label for="id_followup{% if cid %}_{{ cid }}{% endif %}" class="custom-control-label">&nbsp;{{ form.followup.label }}</label>
+                </div>
+            </div>
+        </div>
+
+  </fieldset>
+
+
+
+    <div class="row form-group">
+        <div class="offset-md-3 col-md-7">
+            <input type="submit" name="post" value="{% trans 'send' %}" class="btn btn-primary" />
+            <input type="submit" name="preview" value="{% trans 'preview' %}" class="btn btn-secondary" />
+        </div>
+    </div>
+
+</form>

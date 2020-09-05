@@ -16,6 +16,7 @@ from django_countries.fields import CountryField
 from wagtail.contrib.routable_page.models import route, RoutablePageMixin
 from django.shortcuts import render
 from streams import blocks
+from django_comments_xtd.models import XtdComment
 
 
 class BlogIndexPage(RoutablePageMixin, Page):
@@ -94,7 +95,7 @@ class BlogPageTag(TaggedItemBase):
     )
 
 
-class BlogPage(Page):
+class BlogPage(RoutablePageMixin, Page):
     subpage_types = []
     parent_page_types = ['blogger.BlogIndexPage']
     date = models.DateField("Post date")
@@ -111,6 +112,15 @@ class BlogPage(Page):
         blank=True
     )
 
+    @route(r'^search/$', name="post_search")
+    def post_search(self, request, *args, **kwargs):
+        search_query = request.GET.get('q', None)
+        self.posts = self.get_posts()
+        if search_query:
+            self.posts = self.posts.filter(body__contains=search_query)
+            self.search_term = search_query
+            self.search_type = 'search'
+        return Page.serve(self, request, *args, **kwargs)
 
     def main_image(self):
         gallery_item = self.gallery_images.first()
@@ -130,6 +140,7 @@ class BlogPage(Page):
             FieldPanel('release'),
             FieldPanel('tags'),
             FieldPanel("categories", widget=forms.CheckboxSelectMultiple),
+            InlinePanel('customcomments', label='Comments'),
 
         ], heading='Blog information'),
         FieldPanel('intro'),
@@ -228,3 +239,12 @@ class BlogCategory(models.Model):
 
     class Meta:
         verbose_name_plural = 'blog categories'
+
+
+class CustomComment(XtdComment):
+    page = ParentalKey(BlogPage, on_delete=models.CASCADE, related_name='customcomments')
+    
+    def save(self, *args, **kwargs):
+        self.user_name = self.user.username
+        self.page = BlogPage.objects.get(pk=self.object_pk)
+        super(CustomComment, self).save(*args, **kwargs)

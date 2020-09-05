@@ -1,11 +1,17 @@
 {% extends "base.html" %}
 {% load ratings %}
-{% load wagtailcore_tags wagtailimages_tags   widget_tweaks static%}
-<!--comments comments_xtd  static-->
+{% load wagtailcore_tags comments comments_xtd static wagtailimages_tags   widget_tweaks static%}
+<!--   -->
 {% block body_class %}template-blogpage{% endblock %}
 {% load social_share %}
 
 {% block content %}
+{% if search_term %}
+  <header class="page-header">
+      <h1 class="page-title">Search Results for <span>{{ search_type }}: {{ search_term }}</span></h1>
+  </header>
+{% endif %}
+
 <div class="container">
     <div class="text-center">
         <h1>{{ page.title }}</h1>
@@ -107,6 +113,22 @@
         </ul>
     </div>
 {% ratings page %}
+    <div class="container-fluid mt-4 comment-form">
+        {{get_comment_count}}
+        {% render_comment_form for page %}
+    </div>
+{% get_comment_count for page as comment_count %}
+<div class="py-4 text-center">
+  {{ comment_count }} comment{{ comment_count|pluralize }}
+  ha{{ comment_count|pluralize:"s,ve" }} been posted
+</div>
+      {% if comment_count %}
+    <hr/>
+        <div class="container-fluid mt-4 media-list">
+              {% render_xtdcomment_tree for page allow_feedback  show_feedback allow_flagging%}
+        </div>
+        {% endif %}
+    </p>
 
     <div>
         <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>

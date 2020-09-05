@@ -9,6 +9,7 @@ from .views import profile_view
 from search import views as search_views
 from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
 urlpatterns = [
+    path(r'comments/', include('django_comments_xtd.urls')),
     url(r'^ratings/', include('star_ratings.urls', namespace='ratings')),
     url(r'^tellme/', include("tellme.urls")),
     url(r'^django-admin/', admin.site.urls),
