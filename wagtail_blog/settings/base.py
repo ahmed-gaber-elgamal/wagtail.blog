@@ -61,12 +61,14 @@ INSTALLED_APPS = [
 
     'blogger',
     'contact',
+    'menus',
     'tellme',
     'wagtailautocomplete',
     'django_social_share',
     'star_ratings',
     'django_comments_xtd',
     'django_comments',
+
 
 ]
 

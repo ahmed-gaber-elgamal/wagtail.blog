@@ -1,8 +1,8 @@
 {% load static wagtailuserbar  %}
 {% load wagtailcore_tags wagtailimages_tags  %}
-{% load static %}
+{% load static menus_tags %}
 {% load wagtailroutablepage_tags %}
-
+{% get_menu 'main' as navigation %}
 <!DOCTYPE html>
 <html class="no-js" lang="en">
     <head>
@@ -44,21 +44,29 @@
 
           <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                  <a class="nav-link" href="{% slugurl 'best-10-horror-movies' %}categories">Categories</a>
+                <li class="nav-item active">
+                  <a class="nav-link" href="/">Home</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% slugurl 'best-10-horror-movies' %}years">Movies by year</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="{% slugurl 'best-10-horror-movies' %}">Our Lists</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% slugurl 'about' %}">About</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% slugurl 'contact-us' %}">Contact Us</a>
-              </li>
+                {% for item in navigation.menu_item.all %}
+                    <li>
+                        <a href="{{item.link}}" class="nav-link">{{item.title}} {% if item.open_in_new_tab %} target="_blank"{%endif%}</a>
+                    </li>
+                {% endfor %}
+<!--                <li class="nav-item">-->
+<!--                  <a class="nav-link" href="{% slugurl 'best-10-horror-movies' %}categories">Categories</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                  <a class="nav-link" href="{% slugurl 'best-10-horror-movies' %}years">Movies by year</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                <a class="nav-link" href="{% slugurl 'best-10-horror-movies' %}">Our Lists</a>-->
+<!--              </li>-->
+<!--              <li class="nav-item">-->
+<!--                <a class="nav-link" href="{% slugurl 'about' %}">About</a>-->
+<!--              </li>-->
+<!--              <li class="nav-item">-->
+<!--                <a class="nav-link" href="{% slugurl 'contact-us' %}">Contact Us</a>-->
+<!--              </li>-->
 
             </ul>
             <ul class="navbar-nav">
