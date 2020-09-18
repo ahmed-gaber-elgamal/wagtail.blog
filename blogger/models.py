@@ -248,3 +248,5 @@ class CustomComment(XtdComment):
         self.user_name = self.user.username
         self.page = BlogPage.objects.get(pk=self.object_pk)
         super(CustomComment, self).save(*args, **kwargs)
+
+

@@ -68,7 +68,7 @@ INSTALLED_APPS = [
     'star_ratings',
     'django_comments_xtd',
     'django_comments',
-
+    'analytical',
 
 ]
 
@@ -240,3 +240,4 @@ COMMENTS_XTD_APP_MODEL_OPTIONS = {
         'who_can_post': 'all'  # Valid values: 'all', users'
     }
 }
+CLICKY_SITE_ID = '101278168'

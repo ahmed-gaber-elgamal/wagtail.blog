@@ -3,11 +3,19 @@
 {% load static menus_tags %}
 {% load wagtailroutablepage_tags %}
 {% get_menu 'main' as navigation %}
+{% get_menu 'footer' as footer %}
+{% get_menu 'youtube' as channels %}
+{% load analytical %}
+{% load clicky %}
+
+
+<!--todo add author social links  dynamically-->
 <!DOCTYPE html>
 <html class="no-js" lang="en">
     <head>
         <meta charset="utf-8" />
         <title>
+
             {% block title %}
                 {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
             {% endblock %}
@@ -19,7 +27,7 @@
         </title>
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+        {% analytical_head_top %}
         {# Global stylesheets #}
         <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
         <link rel="stylesheet" href="https://bootswatch.com/4/cyborg/bootstrap.min.css" crossorigin="anonymous">
@@ -30,10 +38,12 @@
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
         {% endblock %}
+        {% analytical_head_bottom %}
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
+                {% analytical_body_top %}
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
           <a class="navbar-brand" href="{% slugurl 'home' %}">
             <img src="{% static 'images/ghost2.svg' %}" height="35" width="35">
@@ -47,32 +57,32 @@
                 <li class="nav-item active">
                   <a class="nav-link" href="/">Home</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% slugurl 'best-10-horror-movies' %}categories">Categories</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% slugurl 'best-10-horror-movies' %}years">Movies by year</a>
+                </li>
                 {% for item in navigation.menu_item.all %}
                     <li>
-                        <a href="{{item.link}}" class="nav-link">{{item.title}} {% if item.open_in_new_tab %} target="_blank"{%endif%}</a>
+                        <a href="{{item.link}}" class="nav-link"  {% if item.open_in_new_tab %} target="_blank"{%endif%}>{{item.title}}</a>
                     </li>
                 {% endfor %}
-<!--                <li class="nav-item">-->
-<!--                  <a class="nav-link" href="{% slugurl 'best-10-horror-movies' %}categories">Categories</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                  <a class="nav-link" href="{% slugurl 'best-10-horror-movies' %}years">Movies by year</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                <a class="nav-link" href="{% slugurl 'best-10-horror-movies' %}">Our Lists</a>-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link" href="{% slugurl 'about' %}">About</a>-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link" href="{% slugurl 'contact-us' %}">Contact Us</a>-->
-<!--              </li>-->
 
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
                     {% if request.user.is_authenticated %}
-                        Hi {{ request.user.username }}
+
+                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Hi {{ request.user.username }}</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                              <a class="dropdown-item" href="{% url 'account_profile' %}">My Profile</a>
+                              <div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="{% url 'account_logout' %}">Logout?</a>
+                            </div>
+                        </li>
                         <a href="{% url 'account_logout' %}" class="nav-link d-inline">Logout?</a>
                     {% else %}
                         Hi Guest!
@@ -127,18 +137,11 @@
         <h5 class="font-weight-bold text-uppercase mt-3 mb-4"> Important Links</h5>
 
         <ul class="list-unstyled">
-          <li>
-            <a href="https://www.imdb.com/?ref_=nv_home" target="_blank">IMDB</a>
-          </li>
-          <li>
-            <a href="https://www.rottentomatoes.com/" target="_blank">Rotten Tomatoes</a>
-          </li>
-          <li>
-            <a href="https://www.indiewire.com/" target="_blank">indiewire</a>
-          </li>
-          <li>
-            <a href="https://variety.com/" target="_blank">Variety</a>
-          </li>
+            {% for item in footer.menu_item.all %}
+                    <li>
+                        <a href="{{item.link}}" class="nav-link" {% if item.open_in_new_tab %} target="_blank"{%endif%}>{{item.title}} </a>
+                    </li>
+                {% endfor %}
         </ul>
 
       </div>
@@ -154,19 +157,14 @@
         <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Youtube Channels</h5>
 
         <ul class="list-unstyled">
-            <li>
-            <a href="https://www.youtube.com/results?search_query=nerd+writer" target="_blank">NerdWriter</a>
-          </li>
-          <li>
-            <a href="https://www.youtube.com/c/FilmGamed" target="_blank">FilmGamed</a>
-          </li>
-          <li>
-            <a href="https://www.youtube.com/channel/UCAMQZZXKxFhdr5gvbcy1IuQ" target="_blank">ShreetVideo</a>
-          </li>
-          <li>
-            <a href="https://www.youtube.com/c/CINEMATOLOGYOfficial" target="_blank">CINEMATOLOGY</a>
-          </li>
-
+                {% for item in channels.menu_item.all %}
+                    <li>
+                        <a href="{{item.link}}" class="nav-link" {% if item.open_in_new_tab %} target="_blank"{%endif%}>{{item.title}} </a>
+                    </li>
+                {% endfor %}
+            <!--            <li>-->
+<!--            <a href="https://www.youtube.com/results?search_query=nerd+writer" target="_blank">NerdWriter</a>-->
+<!--          </li>-->
         </ul>
 
       </div>
@@ -207,11 +205,6 @@
         <i class="fab fa-twitter fa-3x"> </i>
       </a>
     </li>
-<!--    <li class="list-inline-item">-->
-<!--      <a class="btn-floating btn-gplus mx-1" href="">-->
-<!--        <i class="fab fa-google fa-3x"> </i>-->
-<!--      </a>-->
-<!--    </li>-->
     <li class="list-inline-item">
       <a class="btn-floating btn-li mx-1" href="https://www.linkedin.com/in/ahmed-gaber-elgamal-eg/">
         <i class="fab fa-linkedin-in fa-3x"> </i>
@@ -235,6 +228,8 @@
 </footer>
 <!-- Footer -->
         {# Global javascript #}
+        <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101278168);</script>
+        <script async src="//static.getclicky.com/js"></script>
         <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
@@ -248,5 +243,7 @@
         {% block extra_js %}
             {# Override this in templates to add extra javascript #}
         {% endblock %}
+            {% analytical_body_bottom %}
+    {% clicky %}
     </body>
 </html>
